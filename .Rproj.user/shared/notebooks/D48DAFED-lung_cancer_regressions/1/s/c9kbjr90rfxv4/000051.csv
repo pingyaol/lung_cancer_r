@@ -1,0 +1,14 @@
+"0","exp_vars <- c(""age"", ""gender"", ""country"", ""diagnosis_date"", ""cancer_stage"", ""beginning_of_treatment_date"", ""family_history"", ""smoking_status"", ""bmi"", ""cholesterol_level"", ""hypertension"", ""asthma"", ""cirrhosis"", ""other_cancer"", ""treatment_type"", ""end_treatment_date"")"
+"0",""
+"0","lin_reg_fun <- function(dt, var) {"
+"0","  # Fit the linear model"
+"0","  model <- lm(survived ~ var, data = dt)"
+"0","  "
+"0","  # Return the summary of the model"
+"0","  return(summary(lm_model))"
+"0","}"
+"0",""
+"0","results <- lapply(exp_vars, function(var) lin_reg_fun(data, exp_vars))"
+"2","Error in model.frame.default(formula = survived ~ var, data = dt, drop.unused.levels = TRUE) : 
+  variable lengths differ (found for 'var')
+"

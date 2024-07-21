@@ -1,0 +1,7 @@
+"0","smoking_survival_plot <- ggplot(smoke_summary, aes(x = smoking_status, y = count, fill = survived)) + "
+"0","  geom_bar(stat = ""identity"", position = ""dodge"") + "
+"0","  labs(title = ""Count of Smoking Status against Survival"", y = ""Count"", x = ""Smoking Status"", fill = ""Survived"") + "
+"0","  geom_text(aes(label = paste0(round(percentage, 1), ""%"")), "
+"0","            position = position_dodge(width = 0.9), vjust = -0.5) + "
+"0","  theme_minimal()"
+"0","smoking_survival_plot"

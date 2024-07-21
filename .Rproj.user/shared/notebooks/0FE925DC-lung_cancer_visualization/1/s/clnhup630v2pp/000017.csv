@@ -1,0 +1,9 @@
+"0","data <- data %>% mutate(survived = as.factor(survived))"
+"0","smoke_summary <- data %>% "
+"0","  group_by(smoking_status, survived) %>% "
+"0","  summarize(count = n()) %>%"
+"0","  mutate(percentage = count / sum(count) * 100)"
+"1","[38;5;232m`summarise()` has grouped output by 'smoking_status'. You can override
+using the `.groups` argument.[39m
+"
+"0","smoke_summary"

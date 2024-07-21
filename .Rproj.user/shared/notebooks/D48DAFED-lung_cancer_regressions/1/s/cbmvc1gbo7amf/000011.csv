@@ -1,0 +1,6 @@
+"0","data <- data %>% mutate(survived = as.factor(survived))"
+"0","data <- data %>% mutate(gender = case_when(gender == ""Female"" ~ 1, gender == ""Male"" ~ 0))"
+"0","data <- data %>% mutate(family_history = case_when(family_history == ""Yes"" ~ 1, family_history == ""No"" ~ 0))"
+"0","data <- data %>% mutate(gender = as.factor(gender), family_history = as.factor(family_history), survived = as.factor(survived))"
+"0","data <- data %>% mutate(across(12:15, as.factor))"
+"0","data %>% head()"
