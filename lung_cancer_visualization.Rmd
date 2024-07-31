@@ -26,7 +26,7 @@ data <- read.csv("data/lung_cancer_mortality_data_test_v2.csv")
 data
 
 # training data (70%)
-select = sort(sample(nrow(data), nrow(data)*.7))
+select = sort(sample(nrow(data), nrow(data)*.8))
 train <- data[select,]
 
 # testing data (30%)
@@ -41,19 +41,35 @@ glimpse(train) %>% head()
 glimpse(test)
 ```
 
+# ```{r}
+# data <- data %>% mutate(time_till_treatment = round(difftime(beginning_of_treatment_date, diagnosis_date, units = "days"), 4))
+# 
+# data <- data %>% mutate(smoking_status = as.factor(smoking_status))
+# data <- data %>% mutate(treatment_length = difftime(end_treatment_date, beginning_of_treatment_date))
+# data %>% select(treatment_length) %>% head()
+# 
+# data <- subset(data, select = -diagnosis_date)
+# data <- subset(data, select = -beginning_of_treatment_date)
+# data <- subset(data, select = -end_treatment_date)
+# 
+# data
+# write.csv(data, file = "data/lung_cancer_mortality_data_test_v2.csv", row.names = F)
+# ```
+
 ```{r}
-data <- data %>% mutate(time_till_treatment = difftime(beginning_of_treatment_date, diagnosis_date))
-data <- data %>% mutate(treatment_length = difftime(end_treatment_date, beginning_of_treatment_date))
-data %>% select(treatment_length) %>% head()
+# multivariate analysis with all variables 
+multivar_model_2 <- glm(survived ~ age + gender + country + cancer_stage + family_history + smoking_status + bmi + cholesterol_level + hypertension + asthma + cirrhosis + other_cancer + treatment_type + time_till_treatment + treatment_length, family = binomial, data = train)
+
+step(multivar_model_2, direction = "both")
+summary(multivar_model_2)
 ```
 
-# ```{r}
-# data <- data %>% mutate(gender = case_when(gender == "Female" ~ 1, gender == "Male" ~ 0))
-# data <- data %>% mutate(family_history = case_when(family_history == "Yes" ~ 1, family_history == "No" ~ 0))
-# data <- data %>% mutate(gender = as.factor(gender), family_history = as.factor(family_history), survived = as.factor(survived))
-# data <- data %>% mutate(across(12:15, as.factor))
-# data %>% head()
-# ```
+```{r}
+# verifying results 
+predictions_2 <- predict(multivar_model_2, newdata = test)
+
+mean((test$survived - predictions_2)^2)
+```
 
 smoking summary 
 ```{r}

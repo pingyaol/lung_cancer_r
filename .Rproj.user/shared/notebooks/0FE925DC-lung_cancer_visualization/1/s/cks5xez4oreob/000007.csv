@@ -1,7 +1,0 @@
-"0","fam_survival_plot <- ggplot(family_summary, aes(x = family_history, y = count, fill = survived)) + "
-"0","  geom_bar(stat = ""identity"", position = ""dodge"") + "
-"0","  labs(title = ""Count of Family History against Survival"", y = ""Count"", x = ""Family History"", fill = ""Survived"") + "
-"0","  geom_text(aes(label = paste0(round(percentage, 1), ""%"")), "
-"0","            position = position_dodge(width = 0.9), vjust = -0.5) + "
-"0","  theme_minimal()"
-"0","fam_survival_plot"

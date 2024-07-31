@@ -1,3 +1,0 @@
-"0","data <- data %>% mutate(time_till_treatment = difftime(beginning_of_treatment_date, diagnosis_date))"
-"0","data <- data %>% mutate(treatment_length = difftime(end_treatment_date, beginning_of_treatment_date))"
-"0","data %>% select(treatment_length) %>% head()"

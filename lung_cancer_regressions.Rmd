@@ -36,19 +36,67 @@ data <- data %>% mutate(across(12:15, as.factor))
 data %>% head()
 ```
 
+<!-- ```{r} -->
+<!-- exp_vars <- c("age", "gender", "country", "diagnosis_date", "cancer_stage", "beginning_of_treatment_date", "family_history", "smoking_status", "bmi", "cholesterol_level", "hypertension", "asthma", "cirrhosis", "other_cancer", "treatment_type", "end_treatment_date") -->
+
+<!-- lin_reg_fun <- function(dt, var) { -->
+<!--   # Fit the linear model -->
+<!--   model <- lm(survived ~ var, data = dt) -->
+
+<!--   # Return the summary of the model -->
+<!--   return(summary(lm_model)) -->
+<!-- } -->
+
+<!-- results <- lapply(exp_vars, function(var) lin_reg_fun(data, exp_vars)) -->
+<!-- ?lapply -->
+<!-- models -->
+<!-- ``` -->
+
 ```{r}
-exp_vars <- c("age", "gender", "country", "diagnosis_date", "cancer_stage", "beginning_of_treatment_date", "family_history", "smoking_status", "bmi", "cholesterol_level", "hypertension", "asthma", "cirrhosis", "other_cancer", "treatment_type", "end_treatment_date")
+#extract independent variables from the training dataset
+indep_var <- subset(train, select = -c(id, survived))
 
-lin_reg_fun <- function(dt, var) {
-  # Fit the linear model
-  model <- lm(survived ~ var, data = dt)
-  
-  # Return the summary of the model
-  return(summary(lm_model))
-}
+#fit univariate regression model for each independent variables
+selected_vars_p <- sapply(names(indep_var), function(var) {
+  model <- glm(survived ~ train[[var]], family = binomial, data = train)
+  summary(model)$coefficients[, "Pr(>|z|)"][2]
+})
 
-results <- lapply(exp_vars, function(var) lin_reg_fun(data, exp_vars))
-?lapply
-models
+selected_vars_p
+
+#track variables that meet the pre-specified criteria - e.g., p-value < 0.1
+selected_vars <- names(indep_var)[selected_vars_p < 0.1]
+
+selected_vars
 ```
+
+```{r}
+# multivariate analysis 
+multivar_model <- glm(survived ~ gender + smoking_status, family = binomial, data = train)
+
+summary(multivar_model)
+```
+
+```{r}
+# verifying results 
+predictions <- predict(multivar_model, newdata = test)
+
+mean((test$survived - predictions)^2)
+```
+
+```{r}
+# multivariate analysis with all variables 
+multivar_model_2 <- glm(survived ~ age + gender + country + cancer_stage + family_history + smoking_status + bmi + cholesterol_level + hypertension + asthma + cirrhosis + other_cancer + treatment_type, family = binomial, data = train)
+
+summary(multivar_model_2)
+```
+
+```{r}
+# verifying results 
+predictions_2 <- predict(multivar_model_2, newdata = test)
+
+mean((test$survived - predictions_2)^2)
+```
+
+
 
